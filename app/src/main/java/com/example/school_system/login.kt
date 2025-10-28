@@ -52,7 +52,7 @@ fun LoginAsScreen() {
 
         // Back button (top-left corner)
         IconButton(
-            onClick = { /* TODO: handle back navigation, e.g., using context.findActivity().finish() */ },
+            onClick = {},
             modifier = Modifier
                 .align(Alignment.TopStart)
                 .padding(16.dp)
