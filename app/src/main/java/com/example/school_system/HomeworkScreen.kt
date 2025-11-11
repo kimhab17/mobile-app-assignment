@@ -1,7 +1,8 @@
 package com.example.school_system
 
-import android.content.Intent
 import android.os.Bundle
+import android.app.Activity
+import android.content.Intent
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
@@ -23,6 +24,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+@OptIn(ExperimentalMaterial3Api::class)
 class HomeworkActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,15 +50,29 @@ fun HomeworkScreen() {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Homework", fontSize = 20.sp, fontWeight = FontWeight.Bold) },
+                title = {
+                    Text(
+                        text = "Homework",
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                },
                 navigationIcon = {
-                    IconButton(onClick = { (context as? ComponentActivity)?.finish() }) {
+                    IconButton(onClick = {
+                        // ត្រឡប់ទៅទំព័រចាស់ (MainProfessorActivity ឬទំព័រមុន)
+                        (context as? Activity)?.finish()
+                    }) {
                         Icon(
-                            painter = painterResource(id = R.drawable.ic_back),
-                            contentDescription = "Back"
+                            painter = painterResource(id = R.drawable.ic_back), // 🖼 PNG icon
+                            contentDescription = "Back",
+                            tint = Color.Unspecified // រក្សាពណ៌ដើម PNG
                         )
                     }
-                }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = Color.White,
+                    titleContentColor = Color.Black
+                )
             )
         },
         content = { paddingValues ->
@@ -74,7 +90,6 @@ fun HomeworkScreen() {
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(160.dp)
-//                        .clip(RoundedCornerShape(12.dp))
                 )
 
                 Spacer(modifier = Modifier.height(12.dp))
@@ -82,7 +97,8 @@ fun HomeworkScreen() {
                 // 🧧 New Homework Button
                 Button(
                     onClick = {
-//                        context.startActivity(Intent(context, NewHomeworkActivity::class.java))
+                        // Example: open NewHomeworkActivity if exists
+                        // context.startActivity(Intent(context, NewHomeworkActivity::class.java))
                     },
                     modifier = Modifier
                         .fillMaxWidth()
@@ -90,12 +106,13 @@ fun HomeworkScreen() {
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF8B0000)),
                     shape = RoundedCornerShape(12.dp)
                 ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_add),
-                        contentDescription = null,
-                        tint = Color.White
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
+                    // Optional Add icon
+                    // Icon(
+                    //     painter = painterResource(id = R.drawable.ic_add),
+                    //     contentDescription = null,
+                    //     tint = Color.White
+                    // )
+                    // Spacer(modifier = Modifier.width(8.dp))
                     Text("New Homework", color = Color.White, fontWeight = FontWeight.Bold)
                 }
 
@@ -108,9 +125,10 @@ fun HomeworkScreen() {
                             title = item,
                             date = "Oct 6",
                             onClick = {
-//                                val intent = Intent(context, HomeworkDetailActivity::class.java)
-//                                intent.putExtra("title", item)
-//                                context.startActivity(intent)
+                                // ចូលទៅទំព័រ HomeworkStatusActivity
+                                context.startActivity(
+                                    Intent(context, HomeworkStatusActivity::class.java)
+                                )
                             }
                         )
                     }
@@ -130,6 +148,7 @@ fun HomeworkCard(title: String, date: String, onClick: () -> Unit) {
             .clickable(onClick = onClick),
         verticalAlignment = Alignment.CenterVertically
     ) {
+        // Use PNG icon
         Image(
             painter = painterResource(id = R.drawable.ic_question_mark),
             contentDescription = null,

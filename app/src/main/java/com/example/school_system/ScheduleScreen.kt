@@ -1,31 +1,29 @@
 package com.example.school_system
 
+import android.app.Activity
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable // <--- ADDED
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.* // <--- CHANGED: Use Material 3 library
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack // <--- ADDED: Use AutoMirrored version
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.platform.LocalContext
-
-// Note: You must remove the following unused Material 2 imports if they exist:
-// import androidx.compose.material.*
-// import androidx.compose.material.icons.filled.ArrowBack <-- REMOVE
 
 data class ScheduleItem(
     val timeStart: String,
@@ -35,13 +33,11 @@ data class ScheduleItem(
     val room: String
 )
 
-@ExperimentalMaterial3Api
+@OptIn(ExperimentalMaterial3Api::class)
 class ScheduleActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            // FIX: You should use your app's theme here, e.g., SchoolsystemTheme 
-            // If you don't have one, just use MaterialTheme from Material 3
             MaterialTheme {
                 ScheduleScreen()
             }
@@ -49,11 +45,13 @@ class ScheduleActivity : ComponentActivity() {
     }
 }
 
-@ExperimentalMaterial3Api
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ScheduleScreen() {
+    val context = LocalContext.current
+
     val days = listOf("20\nMon", "21\nTue", "22\nWed", "23\nThu", "24\nFri", "25\nSat")
-    var selectedDay by remember { mutableIntStateOf(0) }
+    var selectedDay by remember { mutableIntStateOf(0) } // prefer mutableIntStateOf for int
 
     val scheduleList = remember {
         listOf(
@@ -65,17 +63,26 @@ fun ScheduleScreen() {
         )
     }
 
-    // FIX: Use Material 3 Scaffold
     Scaffold(
         topBar = {
-            // FIX: Use Material 3 TopAppBar, CenterAlignedTopAppBar, or SmallTopAppBar
             CenterAlignedTopAppBar(
                 title = { Text("Schedule", fontWeight = FontWeight.Bold) },
                 navigationIcon = {
-                    IconButton(onClick = { (days as? ComponentActivity)?.finish() }) {
+                    IconButton(onClick = {
+                        // Slide-back animation: finish then overridePendingTransition
+                        val activity = (context as? Activity)
+                        activity?.finish()
+                        // call overridePendingTransition on the Activity instance
+                        // slide_out_right.xml will move this activity out to the right
+                        activity?.overridePendingTransition(
+                            R.anim.slide_in_left, // incoming animation for previous activity (optional)
+                            R.anim.slide_out_right // outgoing animation for this activity
+                        )
+                    }) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_back),
-                            contentDescription = "Back"
+                            contentDescription = "Back",
+                            tint = Color.Unspecified
                         )
                     }
                 },
@@ -84,14 +91,15 @@ fun ScheduleScreen() {
                     titleContentColor = Color.Black
                 )
             )
-        }
+        },
+        containerColor = Color.White
     ) { innerPadding ->
-        Column(modifier = Modifier
-            .fillMaxSize()
-            .background(Color.White)
-            .padding(innerPadding)) {
-
-            // Days Row (Logic unchanged)
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.White)
+                .padding(innerPadding)
+        ) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -122,12 +130,12 @@ fun ScheduleScreen() {
                 }
             }
 
-            // FIX: Use Material 3 Divider
-            Divider(color = Color.LightGray, thickness = 1.dp)
+            HorizontalDivider(color = Color.LightGray, thickness = 1.dp)
 
-            // Schedule List
             LazyColumn(
-                modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp, vertical = 8.dp)
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 16.dp, vertical = 8.dp)
             ) {
                 items(scheduleList) { item ->
                     ScheduleCard(item)
@@ -144,15 +152,13 @@ fun ScheduleCard(item: ScheduleItem) {
             .fillMaxWidth()
             .padding(vertical = 8.dp)
     ) {
-        // Time (Unchanged)
         Text(
-            text = "${item.timeStart}",
+            text = item.timeStart,
             fontSize = 14.sp,
             color = Color.Gray,
             modifier = Modifier.padding(bottom = 4.dp)
         )
 
-        // Subject Card (Unchanged)
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -188,8 +194,7 @@ fun ScheduleCard(item: ScheduleItem) {
             )
         }
 
-        // FIX: Use Material 3 Divider
-        Divider(
+        HorizontalDivider(
             color = Color.LightGray,
             thickness = 1.dp,
             modifier = Modifier.padding(top = 12.dp)

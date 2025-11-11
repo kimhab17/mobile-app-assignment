@@ -25,19 +25,18 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.school_system.ui.theme.SchoolsystemTheme // Assuming your theme file path
+import com.example.school_system.ui.theme.SchoolsystemTheme
 
-
-// Define the dark red color used in the buttons/borders (0xFF8B0000)
+// Custom dark red color
 val DarkRed = Color(0xFF8B0000)
 
+@OptIn(ExperimentalMaterial3Api::class)
 class ProfessorLoginActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             SchoolsystemTheme {
                 ProfessorLoginScreen(
-                    // TODO: Replace with actual navigation logic (e.g., using a NavController)
                     onBackClicked = { finish() }
                 )
             }
@@ -45,15 +44,16 @@ class ProfessorLoginActivity : ComponentActivity() {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfessorLoginScreen(
     onBackClicked: () -> Unit
 ) {
-    // State for input fields
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    val context = LocalContext.current
 
-    // Custom TextField colors to match the design (dark red border)
+    // Custom colors for TextField
     val customTextFieldColors = TextFieldDefaults.colors(
         focusedIndicatorColor = DarkRed,
         unfocusedIndicatorColor = DarkRed.copy(alpha = 0.5f),
@@ -61,13 +61,10 @@ fun ProfessorLoginScreen(
         unfocusedContainerColor = Color.White,
         cursorColor = DarkRed
     )
-    val context = LocalContext.current
+
     Box(modifier = Modifier.fillMaxSize()) {
-        // 1. Background Image (Top Section)
-        // NOTE: The image in the design is only visible at the very top.
-        // We use the same resource ID for consistency.
+        // Background Image (Top)
         Image(
-            // Replace R.drawable.bg_university with your actual resource ID
             painter = painterResource(id = R.drawable.rupp_bg),
             contentDescription = "University Building",
             contentScale = ContentScale.Crop,
@@ -76,7 +73,7 @@ fun ProfessorLoginScreen(
                 .align(Alignment.TopCenter)
         )
 
-        // 2. Back button (Top-left corner)
+        // Back button
         IconButton(
             onClick = onBackClicked,
             modifier = Modifier
@@ -85,7 +82,6 @@ fun ProfessorLoginScreen(
                 .background(Color.White.copy(alpha = 0.5f), RoundedCornerShape(50))
                 .size(40.dp)
         ) {
-            // Using a standard Material Icon for clarity, but you can use your custom one
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                 contentDescription = "Back",
@@ -93,7 +89,7 @@ fun ProfessorLoginScreen(
             )
         }
 
-        // 3. Login Card (Bottom Section)
+        // Login card
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -104,7 +100,6 @@ fun ProfessorLoginScreen(
                 )
                 .padding(horizontal = 32.dp, vertical = 40.dp)
         ) {
-            // Title
             Text(
                 text = "Log In As Professor",
                 fontSize = 24.sp,
@@ -113,7 +108,7 @@ fun ProfessorLoginScreen(
                 modifier = Modifier.padding(bottom = 32.dp)
             )
 
-            // Email Input Field
+            // Email field
             Text(
                 text = "Input Your Email",
                 fontSize = 16.sp,
@@ -133,7 +128,7 @@ fun ProfessorLoginScreen(
                     .padding(bottom = 24.dp)
             )
 
-            // Password Input Field
+            // Password field
             Text(
                 text = "Input Your Password",
                 fontSize = 16.sp,
@@ -154,10 +149,9 @@ fun ProfessorLoginScreen(
                     .padding(bottom = 24.dp)
             )
 
-            // Log In Button
+            // Login button
             Button(
                 onClick = {
-                    // NAVIGATE TO PROFESSOR LOGIN ACTIVITY
                     context.startActivity(Intent(context, MainProfessorActivity::class.java))
                 },
                 colors = ButtonDefaults.buttonColors(containerColor = DarkRed),
@@ -181,8 +175,6 @@ fun ProfessorLoginScreen(
 @Composable
 fun ProfessorLoginScreenPreview() {
     SchoolsystemTheme {
-        ProfessorLoginScreen(
-            onBackClicked = {}
-        )
+        ProfessorLoginScreen(onBackClicked = {})
     }
 }

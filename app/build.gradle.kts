@@ -40,6 +40,8 @@ android {
 }
 
 dependencies {
+    // ✅ បន្ថែម version ត្រឹមត្រូវសម្រាប់ Compose Material Icons
+    implementation("androidx.compose.material:material-icons-extended:1.7.5")
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -50,6 +52,8 @@ dependencies {
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
     implementation("androidx.navigation:navigation-compose:2.8.0")
+    implementation(libs.androidx.material3)
+    implementation(libs.espresso.core)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

@@ -1,5 +1,6 @@
 package com.example.school_system
 
+import android.app.Activity
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -9,15 +10,13 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-//import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -27,22 +26,36 @@ class AttendanceActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-           AttendanceScreen()
+            AttendanceScreen()
         }
     }
 }
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AttendanceScreen() {
+    val context = LocalContext.current  // ✅ moved here instead of null
+
     Scaffold(
         topBar = {
             TopAppBar(
                 title = { Text("Student Attendance", fontWeight = FontWeight.Bold) },
                 navigationIcon = {
-                    IconButton(onClick = { /* TODO: Back Action */ }) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                    IconButton(onClick = {
+                        // ✅ Go back to previous screen
+                        (context as? Activity)?.finish()
+                    }) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_back), // 🖼 PNG icon
+                            contentDescription = "Back",
+                            tint = Color.Unspecified // Keep original PNG color
+                        )
                     }
-                }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = Color.White,
+                    titleContentColor = Color.Black
+                )
             )
         }
     ) { innerPadding ->
@@ -62,7 +75,6 @@ fun AttendanceScreen() {
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF8B0000)),
                     shape = RoundedCornerShape(8.dp)
                 ) {
-//                    Icon(Icons.Default.CalendarMonth, contentDescription = null)
                     Spacer(modifier = Modifier.width(4.dp))
                     Text("06-Oct-2025")
                 }
@@ -79,18 +91,18 @@ fun AttendanceScreen() {
             Spacer(modifier = Modifier.height(16.dp))
 
             // 🔹 Student List
+            val students = listOf(
+                Student("Andy Raj Kapoor", "07:30 am", "11:45 am", "P"),
+                Student("Alex Martin", "07:30 am", "11:45 am", "A"),
+                Student("San Visal", "07:30 am", "11:45 am", "P"),
+                Student("Seyha Channun", "07:30 am", "11:45 am", "A"),
+                Student("Suy Mengseang", "07:30 am", "11:45 am", "P"),
+                Student("Sok Kimbab", "07:30 am", "11:45 am", "P")
+            )
+
             LazyColumn(
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
-                val students = listOf(
-                    Student("Andy Raj Kapoor", "07:30 am", "11:45 am", "P"),
-                    Student("Alex Martin", "07:30 am", "11:45 am", "A"),
-                    Student("San Visal", "07:30 am", "11:45 am", "P"),
-                    Student("Seyha Channun", "07:30 am", "11:45 am", "A"),
-                    Student("Suy Mengseang", "07:30 am", "11:45 am", "P"),
-                    Student("Sok Kimbab", "07:30 am", "11:45 am", "P")
-                )
-
                 items(students.size) { index ->
                     val student = students[index]
                     StudentRow(student)
