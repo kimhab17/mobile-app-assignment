@@ -42,7 +42,8 @@ class MainActivity : ComponentActivity() {
             SchoolsystemTheme {
 //                UniversityIntroScreen()
 //                HomeworkStatusScreen()
-                ProfileActivity()
+//                ProfileActivity()
+                StudentLoginActivity()
             }
         }
     }

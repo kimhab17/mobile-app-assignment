@@ -14,6 +14,7 @@
         <activity android:name=".ScheduleActivity" android:exported="false" />
         <activity android:name=".AttendanceActivity" android:exported="false" />
         <activity android:name=".HomeworkStatusActivity" />
+        <activity android:name=".StudentLoginActivity" />
         <!-- ✅ Added -->
         <activity
             android:name=".LoginActivity"
