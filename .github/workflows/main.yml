@@ -49,27 +49,23 @@ jobs:
   deploy:
     name: Deploy to Firebase App Distribution
     runs-on: ubuntu-latest
-    needs: ci # Ensures this runs only after the 'ci' job successfully creates the artifact
-    
+    needs: ci 
     environment: Testing 
 
     steps:
-      # 1. Download the built APK artifact
       - name: Download APK artifact
         uses: actions/download-artifact@v4
         with:
           name: debug-apk
-          path: app/build/outputs/apk/debug/ # APK will be downloaded to this folder
+          path: app/build/outputs/apk/debug/
 
-      # 2. Deploy to Firebase App Distribution
+      # 2. Deploy to Firebase App Distribution - Using the verified action
       - name: Distribute to Testers
-        uses: wziegel/firebase-tools-action@v1
+        uses: wzieba/Firebase-Distribution-Github-Action@v1.3.2 # <--- FIX IS HERE
         with:
-          # FIX: Using the YAML Pipe (|) operator to treat these lines as a single argument.
-          args: |
-            appdistribution:distribute app/build/outputs/apk/debug/app-debug.apk 
-            --app 1:xxxxxxxxxxxx:android:xxxxxxxxxxxx # <<< REPLACE WITH YOUR FIREBASE APP ID!
-            --groups "testers, developers" 
-            --release-notes "Automated build ${{ github.sha }}"
-        env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }} # Uses the secret token
+          # This action uses 'appId', 'token', 'file', and 'groups' as separate inputs
+          appId: YOUR_FIREBASE_APP_ID_HERE # <<< REPLACE WITH YOUR FIREBASE APP ID!
+          token: ${{ secrets.FIREBASE_TOKEN }}
+          file: app/build/outputs/apk/debug/app-debug.apk
+          groups: testers, developers
+          releaseNotes: Automated build ${{ github.sha }}
