@@ -50,3 +50,31 @@ jobs:
         with:
           name: debug-apk
           path: app/build/outputs/apk/debug/app-debug.apk
+  deploy:
+  name: Deploy to Firebase App Distribution
+  runs-on: ubuntu-latest
+  needs: ci # Ensures this job only runs if the CI job (build and test) passes
+  
+  # Optional but recommended for organizing
+  environment: Testing 
+
+  steps:
+    # 1. Download the built APK artifact (named 'debug-apk' in your CI job)
+    - name: Download APK artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: debug-apk
+        path: app/build/outputs/apk/debug/ # Path where the artifact lands
+
+    # 2. Deploy to Firebase App Distribution
+    - name: Distribute to Testers
+      # Uses a community action to simplify Firebase CLI commands
+      uses: wziegel/firebase-tools-action@v1 
+      with:
+        args: appdistribution:distribute app/build/outputs/apk/debug/app-debug.apk \
+              --app 1:xxxxxxxxxxxx:android:xxxxxxxxxxxx \ # <<< REPLACE WITH YOUR FIREBASE APP ID!
+              --groups "testers, developers" \
+              --release-notes "Automated build ${{ github.sha }}"
+      env:
+        # Uses the secret token you created in Phase 1
+        FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
