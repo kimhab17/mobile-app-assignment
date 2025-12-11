@@ -1,4 +1,8 @@
 package com.example.school_system.data.model
 
-class User {
-}
+data class User(
+    val name: String,
+    val email: String,
+    val role: String,
+    val age: Int
+)

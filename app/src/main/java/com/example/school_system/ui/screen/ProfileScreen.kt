@@ -53,6 +53,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.school_system.ui.screen.EditProfileActivity
 import com.example.school_system.ui.theme.SchoolsystemTheme
 
 class ProfileActivity : ComponentActivity() {

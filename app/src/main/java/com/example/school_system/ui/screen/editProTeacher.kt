@@ -1,4 +1,4 @@
-package com.example.school_system
+package com.example.school_system.ui.screen
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -43,6 +43,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.school_system.R
 import com.example.school_system.ui.theme.SchoolsystemTheme
 
 class EditProfileActivity : ComponentActivity() {

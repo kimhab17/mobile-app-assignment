@@ -40,7 +40,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
-import com.example.school_system.ui.theme.SchoolsystemTheme
+    import com.example.school_system.ui.screen.DashboardActivity
+    import com.example.school_system.ui.theme.SchoolsystemTheme
 
     @OptIn(ExperimentalMaterial3Api::class)
     class StudentLoginActivity : ComponentActivity() {

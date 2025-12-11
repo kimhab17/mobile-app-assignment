@@ -33,18 +33,20 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.school_system.ui.screen.TestApiScreen
 import com.example.school_system.ui.theme.SchoolsystemTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            SchoolsystemTheme {
-                UniversityIntroScreen()
-//                HomeworkStatusScreen()
-//                ProfileActivity()
-//                StudentLoginActivity()
-            }
+            TestApiScreen()
+//            SchoolsystemTheme {
+//                UniversityIntroScreen()
+//////                HomeworkStatusScreen()
+//////                ProfileActivity()
+//////                StudentLoginActivity()
+//            }
         }
     }
 }
