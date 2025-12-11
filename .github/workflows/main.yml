@@ -59,12 +59,11 @@ jobs:
           name: debug-apk
           path: app/build/outputs/apk/debug/
 
-      # 2. Deploy to Firebase App Distribution - Using the verified action
       - name: Distribute to Testers
-        uses: wzieba/Firebase-Distribution-Github-Action@v1.3.2 # <--- FIX IS HERE
+        uses: wzieba/Firebase-Distribution-Github-Action@v1.3.2 
         with:
-          # This action uses 'appId', 'token', 'file', and 'groups' as separate inputs
-          appId: YOUR_FIREBASE_APP_ID_HERE # <<< REPLACE WITH YOUR FIREBASE APP ID!
+          # Note: No 'env:' block is used here, inputs are direct 'with:' parameters
+          appId: YOUR_FIREBASE_APP_ID_HERE # <<< CHECK IF THIS IS CORRECTLY REPLACED!
           token: ${{ secrets.FIREBASE_TOKEN }}
           file: app/build/outputs/apk/debug/app-debug.apk
           groups: testers, developers
